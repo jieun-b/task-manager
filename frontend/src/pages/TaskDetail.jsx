@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import useTaskStore from '../store/taskStore'
 import { formatDate, formatRelativeTime } from '../utils/formatters'
-import { CATEGORY_COLORS, STATUS_COLORS, IMPORTANCE_COLORS, URGENCY_COLORS } from '../utils/constants'
+import { CATEGORY_COLORS, STATUS_COLORS } from '../utils/constants'
 
 const TaskDetail = () => {
   const { id } = useParams()
@@ -24,8 +24,7 @@ const TaskDetail = () => {
         title: taskData.title,
         description: taskData.description,
         status: taskData.status,
-        importance: taskData.importance,
-        urgency: taskData.urgency,
+        category: taskData.category,
       })
     } catch (error) {
       console.error('Failed to load task:', error)
@@ -95,6 +94,19 @@ const TaskDetail = () => {
             />
           </div>
           <div className="form-group">
+            <label>카테고리</label>
+            <select
+              value={editData.category}
+              onChange={(e) => setEditData({ ...editData, category: e.target.value })}
+            >
+              <option value="업무">업무</option>
+              <option value="요청">요청</option>
+              <option value="공지">공지</option>
+              <option value="질문">질문</option>
+              <option value="논의">논의</option>
+            </select>
+          </div>
+          <div className="form-group">
             <label>상태</label>
             <select
               value={editData.status}
@@ -104,28 +116,6 @@ const TaskDetail = () => {
               <option value="In Progress">In Progress</option>
               <option value="Done">Done</option>
               <option value="Blocked">Blocked</option>
-            </select>
-          </div>
-          <div className="form-group">
-            <label>중요도</label>
-            <select
-              value={editData.importance}
-              onChange={(e) => setEditData({ ...editData, importance: e.target.value })}
-            >
-              <option value="High">High</option>
-              <option value="Medium">Medium</option>
-              <option value="Low">Low</option>
-            </select>
-          </div>
-          <div className="form-group">
-            <label>긴급도</label>
-            <select
-              value={editData.urgency}
-              onChange={(e) => setEditData({ ...editData, urgency: e.target.value })}
-            >
-              <option value="Urgent">Urgent</option>
-              <option value="Normal">Normal</option>
-              <option value="Low">Low</option>
             </select>
           </div>
         </div>
@@ -145,18 +135,6 @@ const TaskDetail = () => {
               style={{ backgroundColor: STATUS_COLORS[task.status] }}
             >
               {task.status}
-            </span>
-            <span 
-              className="badge" 
-              style={{ backgroundColor: IMPORTANCE_COLORS[task.importance] }}
-            >
-              중요도: {task.importance}
-            </span>
-            <span 
-              className="badge" 
-              style={{ backgroundColor: URGENCY_COLORS[task.urgency] }}
-            >
-              긴급도: {task.urgency}
             </span>
           </div>
 

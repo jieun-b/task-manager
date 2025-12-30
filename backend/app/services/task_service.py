@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from typing import List, Optional, Dict, Any
 from app.database.repositories.task_repository import TaskRepository
-from app.models.task import Task, TaskCategory, TaskStatus, Importance, Urgency
+from app.models.task import Task, TaskCategory, TaskStatus
 from datetime import datetime
 
 
@@ -22,8 +22,6 @@ class TaskService:
         self,
         category: Optional[str] = None,
         status: Optional[str] = None,
-        importance: Optional[str] = None,
-        urgency: Optional[str] = None,
         assignee_id: Optional[int] = None,
         search: Optional[str] = None,
         limit: int = 100,
@@ -33,14 +31,10 @@ class TaskService:
         # 문자열을 Enum으로 변환
         category_enum = TaskCategory(category) if category else None
         status_enum = TaskStatus(status) if status else None
-        importance_enum = Importance(importance) if importance else None
-        urgency_enum = Urgency(urgency) if urgency else None
         
         return self.repository.get_all(
             category=category_enum,
             status=status_enum,
-            importance=importance_enum,
-            urgency=urgency_enum,
             assignee_id=assignee_id,
             search=search,
             limit=limit,
@@ -54,10 +48,6 @@ class TaskService:
             task_data["category"] = TaskCategory(task_data["category"])
         if "status" in task_data and isinstance(task_data["status"], str):
             task_data["status"] = TaskStatus(task_data["status"])
-        if "importance" in task_data and isinstance(task_data["importance"], str):
-            task_data["importance"] = Importance(task_data["importance"])
-        if "urgency" in task_data and isinstance(task_data["urgency"], str):
-            task_data["urgency"] = Urgency(task_data["urgency"])
         
         return self.repository.update(task_id, task_data)
     
@@ -72,7 +62,6 @@ class TaskService:
         in_progress = len(self.repository.get_by_status(TaskStatus.IN_PROGRESS))
         done = len(self.repository.get_by_status(TaskStatus.DONE))
         blocked = len(self.repository.get_by_status(TaskStatus.BLOCKED))
-        urgent = len(self.repository.get_urgent_tasks())
         
         return {
             "total": total,
@@ -81,7 +70,6 @@ class TaskService:
                 "in_progress": in_progress,
                 "done": done,
                 "blocked": blocked
-            },
-            "urgent_count": urgent
+            }
         }
 

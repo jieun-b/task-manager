@@ -16,8 +16,6 @@ class TaskCreate(BaseModel):
     description: Optional[str] = None
     category: Optional[str] = "업무"
     status: Optional[str] = "Todo"
-    importance: Optional[str] = "Medium"
-    urgency: Optional[str] = "Normal"
     assignee_id: Optional[int] = None
     tags: Optional[str] = None
     due_date: Optional[datetime] = None
@@ -28,8 +26,6 @@ class TaskUpdate(BaseModel):
     description: Optional[str] = None
     category: Optional[str] = None
     status: Optional[str] = None
-    importance: Optional[str] = None
-    urgency: Optional[str] = None
     assignee_id: Optional[int] = None
     tags: Optional[str] = None
     due_date: Optional[datetime] = None
@@ -41,8 +37,6 @@ class TaskResponse(BaseModel):
     description: Optional[str]
     category: str
     status: str
-    importance: str
-    urgency: str
     assignee_id: Optional[int]
     tags: Optional[str]
     due_date: Optional[datetime]
@@ -66,8 +60,6 @@ def create_task(task: TaskCreate, db: Session = Depends(get_db)):
 def get_tasks(
     category: Optional[str] = Query(None, description="카테고리 필터"),
     status: Optional[str] = Query(None, description="상태 필터"),
-    importance: Optional[str] = Query(None, description="중요도 필터"),
-    urgency: Optional[str] = Query(None, description="긴급도 필터"),
     assignee_id: Optional[int] = Query(None, description="담당자 ID 필터"),
     search: Optional[str] = Query(None, description="검색어"),
     limit: int = Query(100, ge=1, le=1000),
@@ -79,8 +71,6 @@ def get_tasks(
     tasks = service.get_tasks(
         category=category,
         status=status,
-        importance=importance,
-        urgency=urgency,
         assignee_id=assignee_id,
         search=search,
         limit=limit,

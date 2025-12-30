@@ -7,8 +7,6 @@ const useTaskStore = create((set, get) => ({
   filters: {
     category: '',
     status: '',
-    importance: '',
-    urgency: '',
     search: '',
   },
   loading: false,
@@ -115,8 +113,6 @@ const useTaskStore = create((set, get) => ({
       filters: {
         category: '',
         status: '',
-        importance: '',
-        urgency: '',
         search: '',
       }
     })

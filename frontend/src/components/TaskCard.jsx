@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { formatDate, isOverdue } from '../utils/formatters'
-import { CATEGORY_COLORS, STATUS_COLORS, IMPORTANCE_COLORS, URGENCY_COLORS } from '../utils/constants'
+import { CATEGORY_COLORS, STATUS_COLORS } from '../utils/constants'
 
 const TaskCard = ({ task }) => {
   if (!task) {
@@ -12,8 +12,6 @@ const TaskCard = ({ task }) => {
   try {
     const categoryColor = CATEGORY_COLORS[task.category] || '#6b7280'
     const statusColor = STATUS_COLORS[task.status] || '#6b7280'
-    const importanceColor = IMPORTANCE_COLORS[task.importance] || '#6b7280'
-    const urgencyColor = URGENCY_COLORS[task.urgency] || '#6b7280'
     
     let overdue = false
     try {
@@ -54,18 +52,6 @@ const TaskCard = ({ task }) => {
               style={{ backgroundColor: statusColor }}
             >
               {task.status}
-            </span>
-            <span 
-              className="badge badge-importance" 
-              style={{ backgroundColor: importanceColor }}
-            >
-              중요도: {task.importance}
-            </span>
-            <span 
-              className="badge badge-urgency" 
-              style={{ backgroundColor: urgencyColor }}
-            >
-              긴급도: {task.urgency}
             </span>
           </div>
           

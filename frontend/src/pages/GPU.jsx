@@ -1,14 +1,15 @@
 import React from 'react'
 
-const Dashboard = () => {
+const GPU = () => {
   return (
     <div className="page-container">
       <div className="empty-page">
-        <h2>Overview</h2>
-        <p>메인 대시보드 영역</p>
+        <h2>Compute Monitor</h2>
+        <p>GPU 사용 추적 페이지</p>
       </div>
     </div>
   )
 }
 
-export default Dashboard
+export default GPU
+

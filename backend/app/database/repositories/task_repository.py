@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import or_, and_
 from typing import List, Optional
 from datetime import datetime
-from app.models.task import Task, TaskCategory, TaskStatus, Importance, Urgency
+from app.models.task import Task, TaskCategory, TaskStatus
 
 
 class TaskRepository:
@@ -23,8 +23,6 @@ class TaskRepository:
         self,
         category: Optional[TaskCategory] = None,
         status: Optional[TaskStatus] = None,
-        importance: Optional[Importance] = None,
-        urgency: Optional[Urgency] = None,
         assignee_id: Optional[int] = None,
         search: Optional[str] = None,
         limit: int = 100,
@@ -36,10 +34,6 @@ class TaskRepository:
             query = query.filter(Task.category == category)
         if status:
             query = query.filter(Task.status == status)
-        if importance:
-            query = query.filter(Task.importance == importance)
-        if urgency:
-            query = query.filter(Task.urgency == urgency)
         if assignee_id:
             query = query.filter(Task.assignee_id == assignee_id)
         if search:
@@ -79,12 +73,4 @@ class TaskRepository:
     
     def get_by_status(self, status: TaskStatus) -> List[Task]:
         return self.db.query(Task).filter(Task.status == status).all()
-    
-    def get_urgent_tasks(self) -> List[Task]:
-        return self.db.query(Task).filter(
-            and_(
-                Task.urgency == Urgency.URGENT,
-                Task.status != TaskStatus.DONE
-            )
-        ).all()
 

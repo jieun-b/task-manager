@@ -20,18 +20,6 @@ class TaskStatus(str, enum.Enum):
     BLOCKED = "Blocked"
 
 
-class Importance(str, enum.Enum):
-    HIGH = "High"
-    MEDIUM = "Medium"
-    LOW = "Low"
-
-
-class Urgency(str, enum.Enum):
-    URGENT = "Urgent"
-    NORMAL = "Normal"
-    LOW = "Low"
-
-
 class Task(Base):
     __tablename__ = "tasks"
 
@@ -40,8 +28,6 @@ class Task(Base):
     description = Column(String(2000), nullable=True)
     category = Column(SQLEnum(TaskCategory), nullable=False, default=TaskCategory.TASK)
     status = Column(SQLEnum(TaskStatus), nullable=False, default=TaskStatus.TODO)
-    importance = Column(SQLEnum(Importance), nullable=False, default=Importance.MEDIUM)
-    urgency = Column(SQLEnum(Urgency), nullable=False, default=Urgency.NORMAL)
     
     # 담당자
     assignee_id = Column(Integer, ForeignKey("users.id"), nullable=True)

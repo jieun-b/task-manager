@@ -10,42 +10,729 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f5f5f5;
-  color: #333;
+  background-color: #ffffff;
+  color: #111827;
 }
 
-.app {
-  min-height: 100vh;
+/* ============================================
+   전체 레이아웃
+   ============================================ */
+.app-container {
+  display: flex;
+  height: 100vh;
+  background: #ffffff;
+  overflow: hidden;
 }
 
-.app-header {
-  background-color: #fff;
-  padding: 1rem 2rem;
+/* ============================================
+   사이드바
+   ============================================ */
+.sidebar {
+  width: 280px;
+  background: #ffffff;
+  border-right: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  height: 100vh;
+  overflow-y: auto;
+  z-index: 100;
+}
+
+/* 브랜드 영역 */
+.sidebar-brand {
+  padding: 28px 24px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.brand-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+/* 검색 영역 */
+.sidebar-search {
+  padding: 20px 24px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.search-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #f9fafb;
+  font-size: 14px;
+  color: #111827;
+  transition: all 0.2s;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #10b981;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.search-input::placeholder {
+  color: #9ca3af;
+}
+
+/* 메인 메뉴 */
+.sidebar-menu {
+  flex: 1;
+  padding: 20px 0;
+  overflow-y: auto;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 24px 12px 28px;
+  color: #6b7280;
+  font-size: 16px;
+  text-decoration: none;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.menu-item:hover {
+  background: #f9fafb;
+  color: #111827;
+}
+
+.menu-item.active {
+  background: #f3f4f6;
+  color: #111827;
+  font-weight: 500;
+}
+
+.menu-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: #10b981;
+}
+
+.menu-item-label {
+  flex: 1;
+}
+
+.menu-badge {
+  background: #ef4444;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 10px;
+  min-width: 18px;
+  text-align: center;
+}
+
+/* 유틸리티 메뉴 */
+.sidebar-utilities {
+  padding: 12px 0;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* 사용자 프로필 */
+.user-profile {
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-top: 1px solid #e5e7eb;
+  background: #f9fafb;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #e5e7eb;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.user-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.user-name {
+  font-size: 15px;
+  font-weight: 500;
+  color: #111827;
+  margin-bottom: 2px;
+}
+
+.user-email {
+  font-size: 12px;
+  color: #6b7280;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ============================================
+   메인 콘텐츠 영역
+   ============================================ */
+.main-content {
+  margin-left: 280px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  overflow: hidden;
+}
+
+.main-header {
+  height: 64px;
+  padding: 0 32px;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  background: #ffffff;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-btn {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.header-btn:hover {
+  background: #f3f4f6;
+}
+
+.header-profile {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.main-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 32px;
+  background: #ffffff;
+}
+
+/* 빈 페이지 스타일 */
+.page-container {
+  width: 100%;
+  height: 100%;
+}
+
+.empty-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  color: #9ca3af;
+}
+
+.empty-page h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 8px;
+}
+
+.empty-page p {
+  font-size: 16px;
+  color: #6b7280;
+}
+
+/* Dashboard & Tasks */
+.tasks-page {
+  width: 100%;
+}
+
+/* ============================================
+   Notion Style Task Board
+   ============================================ */
+.tasks-page.notion-style {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* 미니멀 헤더 */
+.notion-header {
+  padding: 16px 0 8px 0;
+  margin-bottom: 24px;
+}
+
+/* 도구 바 */
+.notion-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0 16px 0;
+  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 24px;
+}
+
+.notion-view-toggle {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.notion-view-btn {
+  padding: 6px 10px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  border-radius: 6px;
+  font-size: 16px;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+}
+
+.notion-view-btn:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+}
+
+.notion-view-btn.active {
+  background: #10b981;
+  border-color: #10b981;
+  color: #ffffff;
+}
+
+.notion-title {
+  font-size: 32px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+.notion-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.notion-btn {
+  padding: 6px 12px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.notion-btn:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+}
+
+.notion-btn.primary {
+  background: #111827;
+  color: #ffffff;
+  border-color: #111827;
+}
+
+.notion-btn.primary:hover {
+  background: #374151;
+  border-color: #374151;
+}
+
+.notion-btn.active {
+  background: #f3f4f6;
+  border-color: #10b981;
+  color: #10b981;
+}
+
+.notion-btn.icon-btn {
+  padding: 6px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+/* 검색 바 */
+.notion-search-bar {
+  padding: 12px 0;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.notion-search {
+  padding: 8px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 14px;
+  width: 100%;
+  max-width: 400px;
+  background: #f9fafb;
+  transition: all 0.2s;
+}
+
+.notion-search:focus {
+  outline: none;
+  border-color: #10b981;
+  background: #ffffff;
+}
+
+/* 필터 드롭다운 */
+.notion-filter-dropdown {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.notion-filter-dropdown-content {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 12px;
+  min-width: 240px;
+}
+
+.notion-filter-section {
+  margin-bottom: 16px;
+}
+
+.notion-filter-section:last-child {
+  margin-bottom: 0;
+}
+
+.notion-filter-section-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.notion-filter-options {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.notion-filter-option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #111827;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+  width: 100%;
+}
+
+.notion-filter-option:hover {
+  background: #f9fafb;
+}
+
+.notion-filter-option.active {
+  background: #10b981;
+  color: #ffffff;
+}
+
+
+.filter-count {
+  font-size: 13px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.notion-filter-option.active .filter-count {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.notion-filter-dropdown-footer {
+  padding-top: 12px;
+  border-top: 1px solid #e5e7eb;
+  margin-top: 12px;
+}
+
+.notion-filter-clear {
+  width: 100%;
+  padding: 8px;
+  border: none;
+  background: transparent;
+  color: #ef4444;
+  font-size: 13px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.notion-filter-clear:hover {
+  background: #fef2f2;
+}
+
+/* 활성 필터 표시 */
+.notion-active-filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 12px 0;
+  margin-bottom: 16px;
+}
+
+.notion-active-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #111827;
+}
+
+.notion-active-filter-chip button {
+  border: none;
+  background: transparent;
+  color: #6b7280;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  padding: 0;
+  margin-left: 4px;
+  transition: color 0.2s;
+}
+
+.notion-active-filter-chip button:hover {
+  color: #111827;
+}
+
+/* 고급 필터 */
+.notion-advanced-filters {
+  padding: 12px 0;
+  margin-bottom: 16px;
+  border-top: 1px solid #f3f4f6;
+}
+
+.notion-advanced-filter-bar {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.notion-filter-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.notion-filter-select {
+  padding: 6px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 13px;
+  background: #ffffff;
+  color: #6b7280;
+  cursor: pointer;
+  min-width: 120px;
+}
+
+.notion-filter-select:focus {
+  outline: none;
+  border-color: #10b981;
+}
+
+/* 칸반 보드 */
+.notion-board-container {
+  flex: 1;
+  overflow-x: auto;
+  overflow-y: auto;
+  padding-top: 12px;
+  padding-bottom: 16px;
+  min-height: 0;
+  max-height: calc(100vh - 300px);
+}
+
+.notion-kanban-board {
+  display: flex;
+  gap: 16px;
+  min-width: fit-content;
+  height: 100%;
+}
+
+.notion-kanban-column {
+  flex: 0 0 340px;
+  display: flex;
+  flex-direction: column;
+  background: #f9fafb;
+  border-radius: 12px;
+  padding: 12px 16px 16px 16px;
+  min-height: 400px;
+}
+
+.notion-column-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0 12px 0;
+  margin-bottom: 8px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.notion-column-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.notion-column-count {
+  font-size: 13px;
+  color: #6b7280;
+  background: #e5e7eb;
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.notion-column-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+}
+
+.notion-empty-column {
+  text-align: center;
+  color: #9ca3af;
+  padding: 24px;
+  font-size: 13px;
+}
+
+/* Notion 스타일 Task Card */
+.notion-kanban-column .task-card {
+  background: #ffffff;
+  padding: 12px;
+  border-radius: 6px;
+  border: none;
+  margin-bottom: 0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s;
+}
+
+.notion-kanban-column .task-card:hover {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin-bottom: 2rem;
+  transform: translateY(-1px);
 }
 
-.app-header h1 {
-  font-size: 1.5rem;
-  color: #2563eb;
+.notion-kanban-column .task-card-header {
+  margin-bottom: 8px;
 }
 
-.app-main {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 2rem;
+.notion-kanban-column .task-card-title {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 4px;
 }
 
-/* Dashboard */
-.dashboard-header {
+.notion-kanban-column .task-card-description {
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 8px;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.notion-kanban-column .task-card-meta {
+  gap: 6px;
+}
+
+.notion-kanban-column .task-card-badges {
+  gap: 4px;
+  margin-bottom: 6px;
+}
+
+/* 보드 형식에서는 상태 배지 숨김 */
+.notion-kanban-column .task-card .badge-status {
+  display: none;
+}
+
+.notion-kanban-column .badge {
+  font-size: 11px;
+  padding: 2px 6px;
+}
+
+.notion-kanban-column .task-card-tags {
+  gap: 4px;
+  margin-bottom: 6px;
+}
+
+.notion-kanban-column .tag {
+  font-size: 11px;
+  padding: 2px 6px;
+}
+
+.notion-kanban-column .task-card-due {
+  font-size: 11px;
+  margin-top: 4px;
+}
+
+.tasks-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1.5rem;
 }
 
-.dashboard-header h2 {
+.tasks-header h2 {
   font-size: 2rem;
+  font-weight: 600;
+  color: #111827;
 }
 
 .view-toggle {
@@ -93,16 +780,6 @@ body {
   box-shadow: 0 4px 8px rgba(37, 99, 235, 0.2);
 }
 
-.stat-card.urgent {
-  border: 2px solid #ef4444;
-}
-
-.stat-card.urgent.active {
-  background: #fef2f2;
-  border: 2px solid #ef4444;
-  box-shadow: 0 4px 8px rgba(239, 68, 68, 0.2);
-}
-
 .stat-label {
   font-size: 0.875rem;
   color: #666;
@@ -113,10 +790,6 @@ body {
   font-size: 2rem;
   font-weight: bold;
   color: #2563eb;
-}
-
-.stat-card.urgent .stat-value {
-  color: #ef4444;
 }
 
 /* Filter Bar */
@@ -171,6 +844,20 @@ body {
 .task-list {
   display: grid;
   gap: 1rem;
+}
+
+/* Notion Style Task List */
+.notion-task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0;
+  width: 100%;
+}
+
+.notion-task-list .task-card {
+  margin-bottom: 0;
+  flex-shrink: 0;
 }
 
 .task-card {
@@ -464,5 +1151,23 @@ body {
   padding: 3rem;
   color: #6b7280;
   font-size: 1.125rem;
+}
+
+/* ============================================
+   반응형 (태블릿/모바일)
+   ============================================ */
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .main-content {
+    margin-left: 0;
+  }
 }
 
