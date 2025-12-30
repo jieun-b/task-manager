@@ -23,14 +23,11 @@ task-manager-mvp/
 - [x] 테스트 데이터 생성 (4명 사용자, 10개 Task)
 - [x] Backend 서버 실행 중 (http://localhost:8000)
 
-### ⚠️ 진행 중/문제
-- [ ] Frontend 서버 실행 안 됨 (Node.js 버전 문제)
-  - 현재: Node.js v12.22.9
-  - 필요: Node.js v18 이상 (Vite 5 요구사항)
+### ✅ 최근 완료
+- [x] Node.js 업그레이드 완료 (nvm으로 v20.19.6 설치)
+- [x] Frontend 서버 실행 성공 (http://localhost:5173)
 
 ### 📋 다음 단계
-- [ ] Node.js 업그레이드 (v18 이상)
-- [ ] Frontend 서버 실행 및 테스트
 - [ ] Slack Bot 연동
 - [ ] Agent AI 연동 (분류 및 우선순위 판단)
 - [ ] WebSocket 실시간 업데이트
@@ -106,13 +103,27 @@ python scripts/seed_data.py
 ### 3. Frontend 서버 (React + Vite)
 
 **요구사항:**
-- Node.js v18 이상
-- npm 9 이상
+- Node.js v18 이상 (현재: v20.19.6 via nvm)
+- npm 9 이상 (현재: v10.8.2)
+
+**nvm 사용 (이미 설치되어 있음):**
+
+새 터미널을 열 때마다 nvm이 자동으로 로드됩니다 (`.bashrc`에 설정됨).
+만약 수동으로 활성화해야 한다면:
+
+```bash
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+nvm use 20
+```
 
 **설치 및 실행:**
 
 ```bash
 cd frontend
+
+# Node.js 버전 확인 (v20.19.6이어야 함)
+node --version
 
 # 의존성 설치 (처음 한 번만)
 npm install
@@ -124,18 +135,6 @@ npm run dev
 **포트:** 5173
 
 **접속:** http://localhost:5173
-
-**Node.js 업그레이드 필요 시:**
-```bash
-# nvm 사용 (권장)
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
-nvm install 20
-nvm use 20
-
-# 또는 NodeSource 저장소 사용
-curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-sudo apt-get install -y nodejs
-```
 
 ---
 
