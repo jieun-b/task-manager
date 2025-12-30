@@ -26,12 +26,16 @@ task-manager-mvp/
 ### ✅ 최근 완료
 - [x] Node.js 업그레이드 완료 (nvm으로 v20.19.6 설치)
 - [x] Frontend 서버 실행 성공 (http://localhost:5173)
+- [x] Dashboard 기능 완성 (Task 목록 표시, 필터링, 통계)
+- [x] Dashboard stats 카드 클릭 기능 (상태별 필터링)
+- [x] 코드 정리 (디버깅 로그 제거)
 
 ### 📋 다음 단계
 - [ ] Slack Bot 연동
 - [ ] Agent AI 연동 (분류 및 우선순위 판단)
 - [ ] WebSocket 실시간 업데이트
 - [ ] 사용자 인증 및 권한 관리
+- [ ] Task 생성/수정/삭제 UI 구현
 
 ---
 
