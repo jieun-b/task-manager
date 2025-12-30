@@ -7,106 +7,169 @@ Slack Bot + Web Dashboard 형태의 내부 업무 관리 서비스
 ```
 task-manager-mvp/
 ├── backend/          # FastAPI Backend
-├── frontend/         # React Frontend
+├── frontend/         # React Frontend (Vite)
+├── docker-compose.yml
 └── README.md
 ```
 
-## 시작하기
+## 현재 상태
 
-### 방법 1: Docker Compose 사용 (권장)
+### ✅ 완료된 작업
+- [x] Git 리포지토리 초기화 및 GitHub 연동
+- [x] PostgreSQL → MySQL 전환
+- [x] Docker Compose 설정 (MySQL)
+- [x] Backend API 구현 (Task CRUD, Dashboard 통계)
+- [x] MySQL 한국어(UTF-8) 지원
+- [x] 테스트 데이터 생성 (4명 사용자, 10개 Task)
+- [x] Backend 서버 실행 중 (http://localhost:8000)
 
-가장 간단한 방법입니다. MySQL과 Backend를 함께 실행합니다.
+### ⚠️ 진행 중/문제
+- [ ] Frontend 서버 실행 안 됨 (Node.js 버전 문제)
+  - 현재: Node.js v12.22.9
+  - 필요: Node.js v18 이상 (Vite 5 요구사항)
+
+### 📋 다음 단계
+- [ ] Node.js 업그레이드 (v18 이상)
+- [ ] Frontend 서버 실행 및 테스트
+- [ ] Slack Bot 연동
+- [ ] Agent AI 연동 (분류 및 우선순위 판단)
+- [ ] WebSocket 실시간 업데이트
+- [ ] 사용자 인증 및 권한 관리
+
+---
+
+## 서버 관리 방법
+
+### 1. 데이터베이스 (MySQL)
+
+**Docker Compose 사용 (권장):**
 
 ```bash
-# Docker Compose로 MySQL과 Backend 실행
-docker-compose up -d mysql
+# MySQL 시작
+docker compose up -d mysql
 
-# Backend는 로컬에서 실행 (개발 편의성)
+# MySQL 중지
+docker compose down mysql
+
+# MySQL 상태 확인
+docker compose ps mysql
+
+# MySQL 로그 확인
+docker compose logs mysql
+```
+
+**포트:** 3306
+
+**연결 정보:**
+- Host: localhost
+- Database: task_manager
+- User: task_user
+- Password: task_password
+
+---
+
+### 2. Backend 서버 (FastAPI)
+
+**로컬 실행 (개발용):**
+
+```bash
 cd backend
-python3 -m venv venv
+
+# 가상환경 활성화
 source venv/bin/activate
-pip install -r requirements.txt
-cp .env.example .env
-# .env 파일의 DATABASE_URL은 docker-compose.yml의 MySQL 설정과 일치해야 합니다
-
-# 데이터베이스 테이블 생성 및 테스트 데이터 삽입
-python scripts/seed_data.py
 
 # 서버 실행
 uvicorn app.main:app --reload --port 8000
 ```
 
-또는 Backend도 Docker로 실행:
+**포트:** 8000
 
-```bash
-# 모든 서비스 실행
-docker-compose up -d
+**주요 엔드포인트:**
+- API 문서: http://localhost:8000/docs
+- Health Check: http://localhost:8000/health
+- Tasks API: http://localhost:8000/api/tasks
+- Dashboard API: http://localhost:8000/api/dashboard/stats
 
-# 데이터베이스 초기화 (컨테이너 내에서)
-docker-compose exec backend python scripts/seed_data.py
-```
+**환경 변수:**
+- `.env` 파일 필요 (`.env.example` 참고)
+- `DATABASE_URL`: MySQL 연결 정보
 
-### 방법 2: 로컬 MySQL 설치
-
-```bash
-# MySQL 설치 (Ubuntu/Debian)
-sudo apt-get update
-sudo apt-get install mysql-server
-
-# MySQL 서비스 시작
-sudo systemctl start mysql
-sudo systemctl enable mysql
-
-# 데이터베이스 생성
-sudo mysql -u root -p
-CREATE DATABASE task_manager;
-CREATE USER 'task_user'@'localhost' IDENTIFIED BY 'task_password';
-GRANT ALL PRIVILEGES ON task_manager.* TO 'task_user'@'localhost';
-FLUSH PRIVILEGES;
-EXIT;
-```
-
-### 2. Backend 설정
-
+**데이터베이스 초기화:**
 ```bash
 cd backend
-
-# 가상환경 생성 및 활성화
-python3 -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-
-# 의존성 설치
-pip install -r requirements.txt
-
-# 환경변수 설정
-cp .env.example .env
-# .env 파일을 열어서 DATABASE_URL을 수정하세요
-# 로컬 MySQL: mysql+pymysql://task_user:task_password@localhost:3306/task_manager
-# Docker MySQL: mysql+pymysql://task_user:task_password@localhost:3306/task_manager
-
-# 데이터베이스 테이블 생성 및 테스트 데이터 삽입
+source venv/bin/activate
 python scripts/seed_data.py
-
-# 서버 실행
-uvicorn app.main:app --reload --port 8000
 ```
 
-Backend API는 `http://localhost:8000`에서 실행됩니다.
-API 문서는 `http://localhost:8000/docs`에서 확인할 수 있습니다.
+---
 
-### 3. Frontend 설정
+### 3. Frontend 서버 (React + Vite)
+
+**요구사항:**
+- Node.js v18 이상
+- npm 9 이상
+
+**설치 및 실행:**
 
 ```bash
 cd frontend
 
-# 의존성 설치
+# 의존성 설치 (처음 한 번만)
 npm install
 
 # 개발 서버 실행
 npm run dev
 ```
 
-Frontend는 `http://localhost:3000`에서 실행됩니다.
+**포트:** 5173
+
+**접속:** http://localhost:5173
+
+**Node.js 업그레이드 필요 시:**
+```bash
+# nvm 사용 (권장)
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+nvm install 20
+nvm use 20
+
+# 또는 NodeSource 저장소 사용
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt-get install -y nodejs
+```
+
+---
+
+## 전체 실행 순서
+
+### 처음 시작하는 경우
+
+1. **MySQL 시작**
+   ```bash
+   docker compose up -d mysql
+   ```
+
+2. **Backend 설정 및 실행**
+   ```bash
+   cd backend
+   source venv/bin/activate
+   pip install -r requirements.txt  # 처음만
+   cp .env.example .env
+   python scripts/seed_data.py  # 테스트 데이터 생성
+   uvicorn app.main:app --reload --port 8000
+   ```
+
+3. **Frontend 설정 및 실행**
+   ```bash
+   cd frontend
+   npm install  # 처음만
+   npm run dev
+   ```
+
+4. **브라우저 접속**
+   - Frontend: http://localhost:5173
+   - Backend API 문서: http://localhost:8000/docs
+
+---
 
 ## 주요 기능
 
@@ -114,7 +177,7 @@ Frontend는 `http://localhost:3000`에서 실행됩니다.
 - Task CRUD API
 - 필터링 및 검색 기능
 - 대시보드 통계 API
-- MySQL 데이터베이스 연동
+- MySQL 데이터베이스 연동 (UTF-8 지원)
 
 ### Frontend
 - Task 목록/상세 보기
@@ -123,12 +186,7 @@ Frontend는 `http://localhost:3000`에서 실행됩니다.
 - 검색 기능
 - 대시보드 통계 표시
 
-## 테스트 데이터
-
-`scripts/seed_data.py`를 실행하면 다음 테스트 데이터가 생성됩니다:
-
-- 4명의 테스트 사용자
-- 10개의 다양한 Task (업무, 요청, 공지, 질문, 논의)
+---
 
 ## API 엔드포인트
 
@@ -142,10 +200,19 @@ Frontend는 `http://localhost:3000`에서 실행됩니다.
 ### Dashboard
 - `GET /api/dashboard/stats` - 대시보드 통계
 
-## 다음 단계
+---
 
-- [ ] Slack Bot 연동
-- [ ] Agent AI 연동 (분류 및 우선순위 판단)
-- [ ] WebSocket 실시간 업데이트
-- [ ] 사용자 인증 및 권한 관리
+## 테스트 데이터
 
+`scripts/seed_data.py`를 실행하면 다음 테스트 데이터가 생성됩니다:
+- 4명의 테스트 사용자
+- 10개의 다양한 Task (업무, 요청, 공지, 질문, 논의)
+
+---
+
+## 기술 스택
+
+- **Backend:** FastAPI, SQLAlchemy, MySQL, Python 3.9+
+- **Frontend:** React, Vite, Zustand, Axios
+- **Database:** MySQL 8.0 (Docker)
+- **DevOps:** Docker Compose
