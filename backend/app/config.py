@@ -4,7 +4,7 @@ from typing import List
 
 class Settings(BaseSettings):
     # Database
-    database_url: str = "postgresql://user:password@localhost:5432/task_manager"
+    database_url: str = "mysql+pymysql://user:password@localhost:3306/task_manager"
     
     # Backend
     backend_url: str = "http://localhost:8000"

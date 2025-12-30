@@ -32,12 +32,12 @@ class Classification(Base):
     category = Column(SQLEnum(ClassificationCategory), nullable=False)
     importance = Column(SQLEnum(ClassificationImportance), nullable=False)
     urgency = Column(SQLEnum(ClassificationUrgency), nullable=False)
-    tags = Column(String, nullable=True)  # JSON 문자열 또는 쉼표 구분
-    summary = Column(String, nullable=True)
+    tags = Column(String(500), nullable=True)  # JSON 문자열 또는 쉼표 구분
+    summary = Column(String(1000), nullable=True)
     confidence = Column(Float, nullable=True)  # 0.0 ~ 1.0
     
     # 원본 텍스트 (나중에 Agent가 분석한 원본)
-    original_text = Column(String, nullable=True)
+    original_text = Column(String(5000), nullable=True)
     
     created_at = Column(DateTime, default=datetime.utcnow)
     

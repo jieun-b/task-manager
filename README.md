@@ -13,20 +13,57 @@ task-manager-mvp/
 
 ## 시작하기
 
-### 1. 데이터베이스 설정
+### 방법 1: Docker Compose 사용 (권장)
 
-PostgreSQL 데이터베이스를 생성하고 연결 정보를 설정하세요.
+가장 간단한 방법입니다. MySQL과 Backend를 함께 실행합니다.
 
 ```bash
-# PostgreSQL 설치 (Ubuntu/Debian)
-sudo apt-get install postgresql postgresql-contrib
+# Docker Compose로 MySQL과 Backend 실행
+docker-compose up -d mysql
+
+# Backend는 로컬에서 실행 (개발 편의성)
+cd backend
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env
+# .env 파일의 DATABASE_URL은 docker-compose.yml의 MySQL 설정과 일치해야 합니다
+
+# 데이터베이스 테이블 생성 및 테스트 데이터 삽입
+python scripts/seed_data.py
+
+# 서버 실행
+uvicorn app.main:app --reload --port 8000
+```
+
+또는 Backend도 Docker로 실행:
+
+```bash
+# 모든 서비스 실행
+docker-compose up -d
+
+# 데이터베이스 초기화 (컨테이너 내에서)
+docker-compose exec backend python scripts/seed_data.py
+```
+
+### 방법 2: 로컬 MySQL 설치
+
+```bash
+# MySQL 설치 (Ubuntu/Debian)
+sudo apt-get update
+sudo apt-get install mysql-server
+
+# MySQL 서비스 시작
+sudo systemctl start mysql
+sudo systemctl enable mysql
 
 # 데이터베이스 생성
-sudo -u postgres psql
+sudo mysql -u root -p
 CREATE DATABASE task_manager;
-CREATE USER user WITH PASSWORD 'password';
-GRANT ALL PRIVILEGES ON DATABASE task_manager TO user;
-\q
+CREATE USER 'task_user'@'localhost' IDENTIFIED BY 'task_password';
+GRANT ALL PRIVILEGES ON task_manager.* TO 'task_user'@'localhost';
+FLUSH PRIVILEGES;
+EXIT;
 ```
 
 ### 2. Backend 설정
@@ -44,6 +81,8 @@ pip install -r requirements.txt
 # 환경변수 설정
 cp .env.example .env
 # .env 파일을 열어서 DATABASE_URL을 수정하세요
+# 로컬 MySQL: mysql+pymysql://task_user:task_password@localhost:3306/task_manager
+# Docker MySQL: mysql+pymysql://task_user:task_password@localhost:3306/task_manager
 
 # 데이터베이스 테이블 생성 및 테스트 데이터 삽입
 python scripts/seed_data.py
@@ -75,7 +114,7 @@ Frontend는 `http://localhost:3000`에서 실행됩니다.
 - Task CRUD API
 - 필터링 및 검색 기능
 - 대시보드 통계 API
-- PostgreSQL 데이터베이스 연동
+- MySQL 데이터베이스 연동
 
 ### Frontend
 - Task 목록/상세 보기

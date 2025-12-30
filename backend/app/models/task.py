@@ -36,8 +36,8 @@ class Task(Base):
     __tablename__ = "tasks"
 
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String, nullable=False, index=True)
-    description = Column(String, nullable=True)
+    title = Column(String(500), nullable=False, index=True)
+    description = Column(String(2000), nullable=True)
     category = Column(SQLEnum(TaskCategory), nullable=False, default=TaskCategory.TASK)
     status = Column(SQLEnum(TaskStatus), nullable=False, default=TaskStatus.TODO)
     importance = Column(SQLEnum(Importance), nullable=False, default=Importance.MEDIUM)
@@ -48,7 +48,7 @@ class Task(Base):
     assignee = relationship("User", back_populates="tasks")
     
     # 태그 (쉼표로 구분된 문자열로 저장)
-    tags = Column(String, nullable=True)
+    tags = Column(String(500), nullable=True)
     
     # 마감일
     due_date = Column(DateTime, nullable=True)
