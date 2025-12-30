@@ -9,7 +9,9 @@ export const taskService = {
         params.append(key, filters[key])
       }
     })
-    const response = await api.get(`/api/tasks?${params.toString()}`)
+    const queryString = params.toString()
+    const url = `/api/tasks${queryString ? `?${queryString}` : ''}/`
+    const response = await api.get(url)
     return response.data
   },
 

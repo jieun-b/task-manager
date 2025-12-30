@@ -8,7 +8,7 @@ class Settings(BaseSettings):
     
     # Backend
     backend_url: str = "http://localhost:8000"
-    cors_origins: List[str] = ["http://localhost:3000"]
+    cors_origins: List[str] = ["http://localhost:3000", "http://localhost:5173"]
     
     # Slack (나중에 사용)
     slack_bot_token: str = ""
