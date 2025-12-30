@@ -10,7 +10,7 @@ export const taskService = {
       }
     })
     const queryString = params.toString()
-    // trailing slash는 query string 앞에만 추가 (뒤에 붙이면 안 됨)
+    // Backend API는 /api/tasks/ (trailing slash 필요)
     const url = `/api/tasks/${queryString ? `?${queryString}` : ''}`
     const response = await api.get(url)
     return response.data

@@ -80,10 +80,27 @@ body {
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-align: center;
+  user-select: none;
+}
+
+.stat-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.stat-card.active {
+  background: #eff6ff;
+  border: 2px solid #2563eb;
+  box-shadow: 0 4px 8px rgba(37, 99, 235, 0.2);
 }
 
 .stat-card.urgent {
   border: 2px solid #ef4444;
+}
+
+.stat-card.urgent.active {
+  background: #fef2f2;
+  border: 2px solid #ef4444;
+  box-shadow: 0 4px 8px rgba(239, 68, 68, 0.2);
 }
 
 .stat-label {
