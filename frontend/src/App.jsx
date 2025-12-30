@@ -5,7 +5,12 @@ import TaskDetail from './pages/TaskDetail'
 
 function App() {
   return (
-    <Router>
+    <Router
+      future={{
+        v7_startTransition: true,
+        v7_relativeSplatPath: true,
+      }}
+    >
       <div className="app">
         <header className="app-header">
           <h1>Task Manager MVP</h1>
