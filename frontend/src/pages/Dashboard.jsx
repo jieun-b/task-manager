@@ -10,6 +10,7 @@ const Dashboard = () => {
     stats, 
     filters, 
     loading, 
+    error,
     fetchTasks, 
     fetchStats, 
     setFilters, 
@@ -21,10 +22,12 @@ const Dashboard = () => {
   useEffect(() => {
     fetchTasks()
     fetchStats()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
     fetchTasks()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters])
 
   const handleFilterChange = (newFilters) => {
@@ -85,6 +88,12 @@ const Dashboard = () => {
         onFilterChange={handleFilterChange}
         onReset={resetFilters}
       />
+
+      {error && (
+        <div className="error-message" style={{ padding: '1rem', background: '#fee', color: '#c33', margin: '1rem' }}>
+          에러: {error}
+        </div>
+      )}
 
       <div className="dashboard-content">
         {viewMode === 'list' ? (

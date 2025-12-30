@@ -19,10 +19,14 @@ const useTaskStore = create((set, get) => ({
     set({ loading: true, error: null })
     try {
       const currentFilters = { ...get().filters, ...filters }
+      console.log('Fetching tasks with filters:', currentFilters)
       const tasks = await taskService.getTasks(currentFilters)
-      set({ tasks, filters: currentFilters, loading: false })
+      console.log('Tasks received:', tasks.length)
+      set({ tasks, filters: currentFilters, loading: false, error: null })
     } catch (error) {
-      set({ error: error.message, loading: false })
+      console.error('Error fetching tasks:', error)
+      const errorMessage = error.response?.data?.detail || error.message || 'Task 목록을 가져오는데 실패했습니다.'
+      set({ error: errorMessage, loading: false, tasks: [] })
     }
   },
 
@@ -91,10 +95,14 @@ const useTaskStore = create((set, get) => ({
   // 통계 가져오기
   fetchStats: async () => {
     try {
+      console.log('Fetching stats...')
       const stats = await taskService.getDashboardStats()
-      set({ stats })
+      console.log('Stats received:', stats)
+      set({ stats, error: null })
     } catch (error) {
-      set({ error: error.message })
+      console.error('Error fetching stats:', error)
+      const errorMessage = error.response?.data?.detail || error.message || '통계를 가져오는데 실패했습니다.'
+      set({ error: errorMessage })
     }
   },
 
