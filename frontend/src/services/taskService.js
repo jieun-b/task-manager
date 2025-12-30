@@ -10,7 +10,8 @@ export const taskService = {
       }
     })
     const queryString = params.toString()
-    const url = `/api/tasks${queryString ? `?${queryString}` : ''}/`
+    // trailing slash는 query string 앞에만 추가 (뒤에 붙이면 안 됨)
+    const url = `/api/tasks/${queryString ? `?${queryString}` : ''}`
     const response = await api.get(url)
     return response.data
   },

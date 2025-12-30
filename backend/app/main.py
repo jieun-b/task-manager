@@ -10,7 +10,8 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI(
     title="Task Manager MVP",
     description="Slack Bot + Web Dashboard 형태의 내부 업무 관리 서비스",
-    version="0.1.0"
+    version="0.1.0",
+    redirect_slashes=False  # trailing slash 리다이렉트 비활성화
 )
 
 # CORS 설정
